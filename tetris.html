@@ -8,6 +8,8 @@
 <meta name="theme-color" content="#0a0a1a">
 <meta name="description" content="Tetris Rocket Edition - Jeu Tetris rétro avec fusée">
 <link rel="manifest" href="tetris-manifest.json">
+<link rel="apple-touch-icon" href="tetris-icon-192.png">
+<link rel="apple-touch-startup-image" href="tetris-icon-512.png" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title>TETRIS — Rocket Edition</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -142,6 +144,7 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
 
   <button class="btn" id="btn-start">JOUER</button>
   <button class="btn secondary" id="btn-leaderboard-menu">Classement</button>
+  <button class="btn" id="btn-install" style="display:none;background:linear-gradient(135deg,#0f0,#0a0);color:#0a0a2e;margin-top:1rem;font-size:clamp(0.7rem,1.8vmin,0.95rem);">📲 Installer l'app</button>
 </div>
 
 <!-- GAME SCREEN -->
@@ -655,9 +658,28 @@ function setupMenu(){
   });
   document.getElementById('btn-start').addEventListener('click',startGame);
   document.getElementById('btn-leaderboard-menu').addEventListener('click',()=>{
+    // Show leaderboard as an overlay on top of the menu
+    let overlay = document.getElementById('leaderboard-overlay');
+    if(!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'leaderboard-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,10,30,0.95);z-index:150;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1rem';
+      overlay.innerHTML = '<div id="leaderboard" class="hidden" style="max-width:500px;width:90%;"></div><button class="btn secondary" id="btn-close-leaderboard" style="margin-top:1rem;">✕ Fermer</button>';
+      document.body.appendChild(overlay);
+      document.getElementById('btn-close-leaderboard').addEventListener('click',()=>{
+        overlay.style.display='none';
+      });
+      // Close with Escape key
+      overlay.addEventListener('keydown',e=>{
+        if(e.key==='Escape') overlay.style.display='none';
+      });
+      overlay.setAttribute('tabindex', '0');
+    }
     const lb=document.getElementById('leaderboard');
     lb.classList.remove('hidden');
     showLeaderboard(lb);
+    overlay.style.display='flex';
+    overlay.focus();
   });
 }
 
@@ -820,6 +842,8 @@ document.getElementById('btn-menu').addEventListener('click',()=>{
   if(rocketAnim) cancelAnimationFrame(rocketAnim);
   document.getElementById('endgame-screen').style.display='none';
   document.getElementById('game-screen').style.display='none';
+  const lbOverlay = document.getElementById('leaderboard-overlay');
+  if(lbOverlay) lbOverlay.style.display='none';
   document.getElementById('menu-screen').style.display='flex';
   document.getElementById('leaderboard').classList.add('hidden');
   state='menu';
@@ -937,10 +961,49 @@ if ('serviceWorker' in navigator) {
 
 // PWA Install prompt
 let installPrompt = null;
+let iOSInstallShown = false;
+
+function getIsIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function showIOSInstallHint(){
+  const btn = document.getElementById('btn-install');
+  if(btn && getIsIOS() && !iOSInstallShown){
+    btn.style.display = 'block';
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      iOSInstallShown = true;
+      btn.textContent = '👆 Appuye sur le bouton Partager ↗️, puis "Sur l\'écran d\'accueil"';
+      btn.style.fontSize = '0.8rem';
+      btn.style.padding = '0.6rem 1.5rem';
+    });
+  }
+}
+
+// PWA Install prompt (Chrome Android/Desktop)
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   installPrompt = e;
+  const btn = document.getElementById('btn-install');
+  if(btn){
+    btn.style.display = 'block';
+    btn.textContent = '📲 Installer l\'application';
+    btn.onclick = () => {
+      installPrompt.prompt();
+      installPrompt.userChoice.then(choice => {
+        if(choice.outcome === 'accepted'){
+          btn.style.display = 'none';
+        }
+      });
+      installPrompt = null;
+    };
+  }
 });
+
+// Detect iOS and show install hint after a delay
+setTimeout(showIOSInstallHint, 2000);
 
 // =============================================
 // INIT
