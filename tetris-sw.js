@@ -1,9 +1,9 @@
-const CACHE = 'tetris-pwa-v1';
+const CACHE = 'tetris-pwa-v2';
 const ASSETS = [
   '/tetris.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/tetris-manifest.json',
+  '/tetris-icon-192.png',
+  '/tetris-icon-512.png'
 ];
 
 self.addEventListener('install', e => {
