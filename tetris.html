@@ -31,26 +31,41 @@ body{background:#0a0a1a;color:#fff;font-family:'Courier New',monospace;display:f
 .btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(0,255,255,0.4)}
 .btn.secondary{background:linear-gradient(135deg,#f0f,#f00);color:#fff}
 #game-screen{display:none;position:fixed;inset:0;background:#0a0a1a;z-index:50;overflow:hidden}
-#game-layout{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0.75rem;height:100%;width:100%;padding:0.5vh 0.5vw 0.5vh 0.5vw}
-.player-area{display:flex;flex-direction:column;gap:0.3rem;align-items:center;justify-content:center;flex-shrink:0}
+#game-layout{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;height:100%;width:100%;padding:0.25vh 0.5vw}
+.game-row{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0.5rem;flex-shrink:0}
+.player-area{display:flex;flex-direction:column;gap:0.2rem;align-items:center;justify-content:center;flex-shrink:0}
 .player-label{color:#0ff;font-size:clamp(0.5rem,1.5vmin,0.75rem);text-align:center;text-transform:uppercase;letter-spacing:0.15rem}
 .player-label.p2{color:#f0f}
 canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;display:block}
 #sidebar{display:flex;flex-direction:column;gap:0.4rem;font-size:clamp(0.5rem,1.4vmin,0.75rem);padding:0.5vh}
+.two-player .player-hud{display:flex;flex-direction:row;gap:0.4rem;font-size:clamp(0.45rem,1.2vmin,0.65rem);align-items:center;justify-content:center;flex-wrap:wrap}
+.two-player .hud-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:0.2rem 0.4rem;display:flex;flex-direction:column;align-items:center;min-width:2.5rem}
+.two-player .hud-item .hud-label{color:#0ff;font-size:clamp(0.35rem,1vmin,0.5rem);text-transform:uppercase}
+.two-player .hud-item .hud-val{color:#fff;font-size:clamp(0.55rem,1.4vmin,0.75rem);font-weight:bold}
+.two-player .hud-item.p2 .hud-label{color:#f0f}
+.two-player #next-canvas-inline{width:clamp(32px,3vmin,48px);height:clamp(32px,3vmin,48px);border-radius:4px;background:#0a0a1a;display:block}
+.two-player #next-canvas{display:none}
+#sidebar .player-hud.hidden{display:none}
 .sidebar-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.4rem 0.6rem}
 .sidebar-box h4{color:#0ff;font-size:clamp(0.45rem,1.2vmin,0.65rem);text-transform:uppercase;margin-bottom:0.2rem}
 .sidebar-box .value{color:#fff;font-size:clamp(0.7rem,1.8vmin,1.1rem);font-weight:bold}
 #next-canvas{width:clamp(50px,4vmin,80px);height:clamp(50px,4vmin,80px);margin:0.3rem auto;display:block;border-radius:4px;background:#0a0a1a}
 /* Touch controls */
-#touch-controls{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(10,10,26,0.95);padding:0.6rem 0.75rem;gap:1rem;justify-content:center;align-items:stretch;border-top:1px solid rgba(0,255,255,0.2)}
-.touch-group{display:flex;gap:0.3rem;align-items:center}
-.touch-btn{border:2px solid #0ff;border-radius:12px;background:rgba(0,255,255,0.08);color:#fff;font-size:clamp(1.2rem,4vw,1.6rem);display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;font-family:'Courier New',monospace;min-width:clamp(52px,12vw,72px);min-height:clamp(52px,12vw,72px);padding:0.3rem}
+#touch-controls{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(10,10,26,0.95);padding:0.4rem 0.5rem;gap:0.5rem;justify-content:center;align-items:stretch;border-top:1px solid rgba(0,255,255,0.2)}
+#touch-controls.two-p{flex-direction:column;align-items:center}
+#touch-controls.two-p .touch-row{display:flex;gap:0.5rem;justify-content:center;align-items:center;width:100%}
+.touch-group{display:flex;gap:0.2rem;align-items:center}
+.touch-group-label{color:#888;font-size:clamp(0.5rem,1.5vmin,0.65rem);text-transform:uppercase;text-align:center;width:100%;margin-bottom:0.15rem}
+.touch-group-label.p2{color:#f0f}
+.touch-btn{border:2px solid #0ff;border-radius:12px;background:rgba(0,255,255,0.08);color:#fff;font-size:clamp(1rem,3.5vw,1.4rem);display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;font-family:'Courier New',monospace;min-width:clamp(44px,10vw,56px);min-height:clamp(44px,10vw,56px);padding:0.2rem}
+.touch-btn.p2{border-color:#f0f;background:rgba(255,0,255,0.08)}
+.touch-btn.p2:active{background:rgba(255,0,255,0.3)}
 .touch-btn:active{background:rgba(0,255,255,0.3);transform:scale(0.95)}
 .touch-btn.drop-btn{border-color:#f0f;background:rgba(255,0,255,0.08)}
 .touch-btn.drop-btn:active{background:rgba(255,0,255,0.3)}
-.touch-btn.drop-large{min-height:clamp(64px,14vw,88px);border-color:#ff0;background:rgba(255,255,0,0.08)}
+.touch-btn.drop-large{border-color:#ff0;background:rgba(255,255,0,0.08)}
 .touch-btn.drop-large:active{background:rgba(255,255,0,0.3)}
-#touch-dpad{display:grid;grid-template-columns:repeat(3,clamp(48px,11vw,60px));grid-template-rows:repeat(2,clamp(48px,11vw,60px));gap:0.3rem;align-items:center;justify-items:center}
+#touch-dpad{display:grid;grid-template-columns:repeat(3,clamp(40px,9.5vw,52px));grid-template-rows:repeat(2,clamp(40px,9.5vw,52px));gap:0.2rem;align-items:center;justify-items:center}
 #pause-overlay,#endgame-screen{position:fixed;inset:0;background:rgba(10,10,30,0.92);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:200}
 #pause-overlay h2,#endgame-screen h2{font-size:clamp(1.5rem,5vmin,2.5rem);color:#0ff;text-shadow:0 0 20px #0ff}
 #pause-overlay p,#endgame-screen p{color:#aaa;margin-top:1rem;font-size:clamp(0.7rem,2vmin,1rem)}
@@ -63,8 +78,11 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
 #leaderboard td{color:#ccc;font-size:clamp(0.65rem,1.6vmin,0.85rem)}
 #leaderboard tr:first-child td{color:#ffd700}
 .hidden{display:none!important}
-/* 2-player: sidebar hidden, canvas gets more space */
+/* 2-player: sidebar hidden, inline HUDs visible */
 .two-player #sidebar{display:none}
+.two-player .player-hud{display:flex}
+.player-hud.hidden{display:none}
+#sidebar.hidden{display:none}
 </style>
 </head>
 <body>
@@ -152,7 +170,13 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
   <div id="game-layout">
     <div class="player-area" id="player1-area">
       <div class="player-label">JOUEUR 1</div>
-      <canvas id="canvas1" class="game-canvas" width="240" height="480" style="max-width:100%;max-height:calc(100vh - 2rem);width:auto;height:auto;aspect-ratio:10/20"></canvas>
+      <canvas id="canvas1" class="game-canvas" width="240" height="480"></canvas>
+      <div class="player-hud" id="hud1">
+        <div class="hud-item"><span class="hud-label">Niv.</span><span class="hud-val" id="hud1-level">1</span></div>
+        <div class="hud-item"><span class="hud-label">Lig.</span><span class="hud-val" id="hud1-lines">0</span></div>
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-val" id="hud1-score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Suiv.</span><canvas id="next-canvas-1" width="64" height="64"></canvas></div>
+      </div>
     </div>
     <div id="sidebar">
       <div class="sidebar-box"><h4>Niveau</h4><div class="value" id="disp-level">1</div></div>
@@ -162,23 +186,50 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
     </div>
     <div class="player-area hidden" id="player2-area">
       <div class="player-label p2">JOUEUR 2</div>
-      <canvas id="canvas2" class="game-canvas" width="240" height="480" style="max-width:100%;max-height:calc(100vh - 2rem);width:auto;height:auto;aspect-ratio:10/20"></canvas>
+      <canvas id="canvas2" class="game-canvas" width="240" height="480"></canvas>
+      <div class="player-hud" id="hud2">
+        <div class="hud-item p2"><span class="hud-label">Niv.</span><span class="hud-val" id="hud2-level">1</span></div>
+        <div class="hud-item p2"><span class="hud-label">Lig.</span><span class="hud-val" id="hud2-lines">0</span></div>
+        <div class="hud-item p2"><span class="hud-label">Score</span><span class="hud-val" id="hud2-score">0</span></div>
+        <div class="hud-item p2"><span class="hud-label">Suiv.</span><canvas id="next-canvas-2" width="64" height="64"></canvas></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- TOUCH CONTROLS -->
 <div id="touch-controls">
-  <div id="touch-dpad">
-    <div></div>
-    <button class="touch-btn" data-action="rotate" aria-label="Rotation">↻</button>
-    <div></div>
-    <button class="touch-btn" data-action="left" aria-label="Gauche">←</button>
-    <button class="touch-btn drop-btn" data-action="down" aria-label="Bas">↓</button>
-    <button class="touch-btn" data-action="right" aria-label="Droite">→</button>
+  <!-- Player 1 D-pad -->
+  <div class="touch-group">
+    <div>
+      <div class="touch-group-label">J1</div>
+      <div id="touch-dpad">
+        <div></div>
+        <button class="touch-btn" data-player="0" data-action="rotate" aria-label="Rotation">↻</button>
+        <div></div>
+        <button class="touch-btn" data-player="0" data-action="left" aria-label="Gauche">←</button>
+        <button class="touch-btn drop-btn" data-player="0" data-action="down" aria-label="Bas">↓</button>
+        <button class="touch-btn" data-player="0" data-action="right" aria-label="Droite">→</button>
+      </div>
+    </div>
   </div>
-  <button class="touch-btn drop-large" data-action="harddrop" aria-label="Chute rapide">⤓</button>
-  <button class="touch-btn" data-action="pause" aria-label="Pause" style="width:auto;padding:0 1rem;font-size:clamp(0.7rem,2vw,1rem);border-color:#f80;background:rgba(255,136,0,0.1);">❚❚</button>
+  <button class="touch-btn drop-large" data-player="0" data-action="harddrop" aria-label="Chute rapide">⤓</button>
+  <button class="touch-btn" data-player="0" data-action="pause" aria-label="Pause" style="width:auto;padding:0 1rem;font-size:clamp(0.7rem,2vw,1rem);border-color:#f80;background:rgba(255,136,0,0.1);">❚❚</button>
+  <!-- Player 2 D-pad (shown in 2P mode) -->
+  <div class="touch-group hidden" id="p2-touch-group">
+    <div>
+      <div class="touch-group-label p2">J2</div>
+      <div id="touch-dpad-p2">
+        <div></div>
+        <button class="touch-btn p2" data-player="1" data-action="rotate" aria-label="Rotation">↻</button>
+        <div></div>
+        <button class="touch-btn p2" data-player="1" data-action="left" aria-label="Gauche">←</button>
+        <button class="touch-btn drop-btn p2" data-player="1" data-action="down" aria-label="Bas">↓</button>
+        <button class="touch-btn p2" data-player="1" data-action="right" aria-label="Droite">→</button>
+      </div>
+    </div>
+  </div>
+  <button class="touch-btn p2 drop-large hidden" data-player="1" data-action="harddrop" aria-label="Chute rapide">⤓</button>
 </div>
 
 <!-- PAUSE OVERLAY -->
@@ -241,59 +292,96 @@ function detectTouch() {
 function resizeCanvases() {
   if (!document.getElementById('game-screen').style.display || document.getElementById('game-screen').style.display === 'none') return;
 
-  const gameLayout = document.getElementById('game-layout');
-  const gw = gameLayout.clientWidth;
-  const gh = gameLayout.clientHeight;
-  const hasSidebar = cfg.players === 1;
-  const sidebarW = hasSidebar ? 140 : 0;
-  const gap = hasSidebar ? 30 : 0;
-  const availW = gw - sidebarW - gap;
-  const availH = gh - 40;
+  const gameScreen = document.getElementById('game-screen');
+  const touchCtrl = document.getElementById('touch-controls');
+  const isTouch = isTouchDevice;
+  const touchH = isTouch ? touchCtrl.offsetHeight : 0;
+  const touchGap = isTouch ? 2 : 0;
 
-  // Canvas must be 1:2 ratio (10:20), find the best cell size
-  const maxCellW = Math.floor(availW / COLS);
-  const maxCellH = Math.floor(availH / ROWS);
-  const cellSize = Math.min(maxCellW, maxCellH);
-  const finalBL = Math.max(20, Math.min(36, cellSize));
+  // Available height: game-screen minus touch controls
+  let availH = gameScreen.clientHeight - touchH - touchGap;
+  // In landscape/touch, also leave room for HUDs below canvas
+  const isLandscape = window.innerWidth > window.innerHeight;
+  const hudH = cfg.players >= 2 ? 30 : 0;
+  availH -= hudH * cfg.players;
 
-  canvasScale = finalBL / BL;
+  if (cfg.players === 2) {
+    // 2 players side by side
+    const availW = gameScreen.clientWidth - 20; // padding
+    const maxCellW = Math.floor((availW - 20) / COLS); // 2 canvases + gap
+    const maxCellH = Math.floor(availH / ROWS);
+    const cellSize = Math.min(maxCellW, maxCellH);
+    const finalBL = Math.max(16, Math.min(32, cellSize));
 
-  const canvasW = finalBL * COLS;
-  const canvasH = finalBL * ROWS;
+    const canvasW = finalBL * COLS;
+    const canvasH = finalBL * ROWS;
 
-  const c1 = document.getElementById('canvas1');
-  if (c1) {
+    const c1 = document.getElementById('canvas1');
     c1.style.width = canvasW + 'px';
     c1.style.height = canvasH + 'px';
-    c1.style.aspectRatio = 'none';
-  }
-  const c2 = document.getElementById('canvas2');
-  if (c2 && cfg.players === 2) {
+    const c2 = document.getElementById('canvas2');
     c2.style.width = canvasW + 'px';
     c2.style.height = canvasH + 'px';
-    c2.style.aspectRatio = 'none';
-  }
 
-  // Update next-canvas size
-  const nc = document.getElementById('next-canvas');
-  if (nc) {
-    const ns = Math.max(40, Math.min(80, finalBL * 4));
-    nc.width = ns;
-    nc.height = ns;
-    nc.style.width = ns + 'px';
-    nc.style.height = ns + 'px';
-  }
+    // Inline next-canvas
+    ['next-canvas-1', 'next-canvas-2'].forEach(id => {
+      const nc = document.getElementById(id);
+      if (nc) {
+        const ns = Math.max(28, Math.min(48, finalBL * 3));
+        nc.width = ns; nc.height = ns;
+        nc.style.width = ns + 'px'; nc.style.height = ns + 'px';
+      }
+    });
+  } else {
+    // 1 player: canvas + sidebar
+    const sidebarW = 140;
+    const gap = 20;
+    const availW = gameScreen.clientWidth - sidebarW - gap;
+    const maxCellW = Math.floor(availW / COLS);
+    const maxCellH = Math.floor(availH / ROWS);
+    const cellSize = Math.min(maxCellW, maxCellH);
+    const finalBL = Math.max(18, Math.min(36, cellSize));
 
-  // Update touch control visibility and sizing
-  const touchCtrl = document.getElementById('touch-controls');
-  if (isTouchDevice) {
-    touchCtrl.style.display = 'flex';
-    // On small screens, make touch buttons smaller
-    if (window.innerWidth < 500) {
-      touchCtrl.style.padding = '0.3rem 0.5rem';
-    } else {
-      touchCtrl.style.padding = '0.5rem 0.75rem';
+    const canvasW = finalBL * COLS;
+    const canvasH = finalBL * ROWS;
+
+    const c1 = document.getElementById('canvas1');
+    c1.style.width = canvasW + 'px';
+    c1.style.height = canvasH + 'px';
+
+    // Inline next-canvas
+    const nc1 = document.getElementById('next-canvas-1');
+    if (nc1) {
+      const ns = Math.max(28, Math.min(48, finalBL * 3));
+      nc1.width = ns; nc1.height = ns;
+      nc1.style.width = ns + 'px'; nc1.style.height = ns + 'px';
     }
+    // Sidebar next-canvas (only in 1p)
+    const nc = document.getElementById('next-canvas');
+    if (nc) {
+      const ns = Math.max(40, Math.min(80, finalBL * 4));
+      nc.width = ns; nc.height = ns;
+      nc.style.width = ns + 'px'; nc.style.height = ns + 'px';
+    }
+  }
+
+  // Touch control sizing
+  if (isTouch) {
+    touchCtrl.style.display = 'flex';
+    if (cfg.players === 2) {
+      touchCtrl.classList.add('two-p');
+      document.getElementById('p2-touch-group').classList.remove('hidden');
+      document.querySelector('#touch-controls > .touch-group:last-of-type + button')?.classList?.add('hidden');
+    } else {
+      touchCtrl.classList.remove('two-p');
+    }
+    if (window.innerWidth < 500) {
+      touchCtrl.style.padding = '0.25rem 0.3rem';
+    } else {
+      touchCtrl.style.padding = '0.3rem 0.4rem';
+    }
+  } else {
+    touchCtrl.style.display = 'none';
   }
 }
 
@@ -336,7 +424,7 @@ class Player {
     this.id=id;this.board=Array.from({length:ROWS},()=>Array(COLS).fill(null));
     this.score=0;this.lines=0;this.level=cfg.level;this.piece=null;this.next=null;
     this.gameOver=false;this.paused=false;this.dropTimer=0;this.dropInterval=1000;
-    this.lockTimer=0;this.lockDelay=500;this.lastTime=0;
+    this.lockTimer=0;this.lockDelay=150;this.lastTime=0;
     this.combo=0;this.softDropping=false;
   }
   spawnPiece(){
@@ -424,7 +512,10 @@ class Player {
     const interval=this.softDropping?Math.min(this.dropInterval,50):this.dropInterval;
     if(this.dropTimer>=interval){
       this.dropTimer=0;
-      if(!this.moveDown()&&this.softDropping){this.lockPiece();}
+      if(!this.moveDown()){
+        if(this.softDropping) this.score+=1; // bonus for soft drop distance
+        this.lockPiece();
+      }
     }
   }
 }
@@ -432,19 +523,19 @@ class Player {
 // =============================================
 // RENDERING
 // =============================================
-function drawCanvas(canvas,player,showGhost,showNext){
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);
+function drawCanvas(canvas, player, showGhost, drawNextInline) {
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle='#0a0a1a'; ctx.fillRect(0,0,canvas.width,canvas.height);
   // Grid
-  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)ctx.strokeRect(c*BL,r*BL,BL,BL);
+  ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1;
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) ctx.strokeRect(c*BL,r*BL,BL,BL);
   // Board
-  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(player.board[r][c]){
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(player.board[r][c]){
     ctx.fillStyle=player.board[r][c];
     ctx.fillRect(c*BL+1,r*BL+1,BL-2,BL-2);
-    ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.strokeRect(c*BL+1,r*BL+1,BL-2,BL-2);
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.strokeRect(c*BL+1,r*BL+1,BL-2,BL-2);
   }
-  if(!player.piece)return;
+  if(!player.piece) return;
   // Ghost
   if(showGhost){
     const gy=player.ghostY();
@@ -461,29 +552,31 @@ function drawCanvas(canvas,player,showGhost,showNext){
   for(let r=0;r<player.piece.shape.length;r++)
     for(let c=0;c<player.piece.shape[r].length;c++)
       if(player.piece.shape[r][c]){
-        const px=(player.piece.x+c)*BL,py=(player.piece.y+r)*BL;
+        const px=(player.piece.x+c)*BL, py=(player.piece.y+r)*BL;
         ctx.fillStyle=player.piece.color;
         ctx.fillRect(px+1,py+1,BL-2,BL-2);
         ctx.fillStyle='rgba(255,255,255,0.25)';
         ctx.fillRect(px+1,py+1,BL-2,3);
         ctx.fillRect(px+1,py+1,3,BL-2);
-        ctx.shadowColor=player.piece.glow;ctx.shadowBlur=6;
+        ctx.shadowColor=player.piece.glow; ctx.shadowBlur=6;
         ctx.fillRect(px+2,py+2,BL-4,BL-4);
         ctx.shadowBlur=0;
       }
-  // Next piece (only draw in 1p mode or if next-canvas exists)
-  if(showNext && cfg.previewOn){
-    const nc = document.getElementById('next-canvas');
-    if(nc && (cfg.players === 1 || nc.parentElement)) {
+  // Draw next piece in inline canvas
+  if(drawNextInline && cfg.previewOn){
+    const ncId = player.id === 0 ? 'next-canvas-1' : 'next-canvas-2';
+    const nc = document.getElementById(ncId);
+    if(nc && player.next){
       const nctx = nc.getContext('2d');
-      nctx.fillStyle='#0a0a1a';nctx.fillRect(0,0,80,80);
-      const s=player.next.shape;const pw=s[0].length*16,ph=s.length*16;
-      const ox=(80-pw)/2,oy=(80-ph)/2;
-      for(let r=0;r<s.length;r++)for(let c=0;c<s[r].length;c++)if(s[r][c]){
+      const ns = nc.width;
+      nctx.fillStyle='#0a0a1a'; nctx.fillRect(0,0,ns,ns);
+      const s=player.next.shape; const pw=s[0].length*12, ph=s.length*12;
+      const ox=(ns-pw)/2, oy=(ns-ph)/2;
+      for(let r=0;r<s.length;r++) for(let c=0;c<s[r].length;c++) if(s[r][c]){
         nctx.fillStyle=player.next.color;
-        nctx.fillRect(ox+c*16+1,oy+r*16+1,14,14);
+        nctx.fillRect(ox+c*12+1,oy+r*12+1,10,10);
         nctx.fillStyle='rgba(255,255,255,0.2)';
-        nctx.fillRect(ox+c*16+1,oy+r*16+1,14,2);
+        nctx.fillRect(ox+c*12+1,oy+r*12+1,10,2);
       }
     }
   }
@@ -702,6 +795,15 @@ function startGame(){
   const p2Area = document.getElementById('player2-area');
   p2Area.classList.toggle('hidden',cfg.players<2);
 
+  // Show/hide sidebar (only in 1P mode)
+  document.getElementById('sidebar').classList.toggle('hidden',cfg.players>1);
+
+  // Show/hide J2 touch controls
+  const p2TouchGroup = document.getElementById('p2-touch-group');
+  const j2HardDrop = document.querySelector('#touch-controls > .touch-btn.p2.drop-large');
+  if (p2TouchGroup) p2TouchGroup.classList.toggle('hidden', cfg.players < 2);
+  if (j2HardDrop) j2HardDrop.classList.toggle('hidden', cfg.players < 2);
+
   const gameLayout = document.getElementById('game-layout');
   gameLayout.classList.toggle('two-player', cfg.players === 2);
 
@@ -741,15 +843,23 @@ function gameLoop(time){
   const canvas1 = document.getElementById('canvas1');
   drawCanvas(canvas1, players[0], showGhost, true);
 
-  // Update HUD - don't rebuild sidebar in 2P mode to preserve elements
+  // Update HUD
   document.getElementById('disp-level').textContent = players[0].level + 1;
   document.getElementById('disp-lines').textContent = players[0].lines;
   document.getElementById('disp-score').textContent = players[0].score;
 
+  // Inline HUD for 1P
+  document.getElementById('hud1-level').textContent = players[0].level + 1;
+  document.getElementById('hud1-lines').textContent = players[0].lines;
+  document.getElementById('hud1-score').textContent = players[0].score;
+
   if(cfg.players === 2) {
-    // Draw player 2 canvas
     const canvas2 = document.getElementById('canvas2');
-    if(canvas2) drawCanvas(canvas2, players[1], showGhost, false);
+    if(canvas2) drawCanvas(canvas2, players[1], showGhost, true);
+    // Inline HUD for 2P
+    document.getElementById('hud2-level').textContent = players[1].level + 1;
+    document.getElementById('hud2-lines').textContent = players[1].lines;
+    document.getElementById('hud2-score').textContent = players[1].score;
   }
 
   // Check win conditions
@@ -910,51 +1020,55 @@ document.addEventListener('touchend', e => {
 
 document.querySelectorAll('.touch-btn').forEach(btn => {
   const action = btn.dataset.action;
+  const playerId = parseInt(btn.dataset.player) || 0;
 
   // Handle single tap
   btn.addEventListener('touchstart', e => {
     e.preventDefault();
     if (action === 'down' || action === 'harddrop') {
-      handleTouchAction(action);
+      handleTouchAction(action, playerId);
       // Repeat for down arrow
       if (action === 'down') {
-        touchRepeatTimers[action] = setInterval(() => {
-          if (state === 'playing') handleTouchAction('down');
+        const timerKey = `p${playerId}_down`;
+        touchRepeatTimers[timerKey] = setInterval(() => {
+          if (state === 'playing') handleTouchAction('down', playerId);
         }, 80);
       }
     } else {
-      handleTouchAction(action);
+      handleTouchAction(action, playerId);
     }
   });
 
   btn.addEventListener('touchend', e => {
     e.preventDefault();
     if (action === 'down') {
-      clearInterval(touchRepeatTimers[action]);
-      delete touchRepeatTimers[action];
-      players.forEach(p => p.softDropping = false);
+      const timerKey = `p${playerId}_down`;
+      clearInterval(touchRepeatTimers[timerKey]);
+      delete touchRepeatTimers[timerKey];
+      if (state === 'playing') players[playerId].softDropping = false;
     }
   });
 
   btn.addEventListener('touchcancel', e => {
-    clearInterval(touchRepeatTimers[action]);
-    delete touchRepeatTimers[action];
-    players.forEach(p => p.softDropping = false);
+    const timerKey = `p${playerId}_down`;
+    clearInterval(touchRepeatTimers[timerKey]);
+    delete touchRepeatTimers[timerKey];
+    if (state === 'playing') players[playerId].softDropping = false;
   });
 
   // Mouse fallback for desktop testing
   btn.addEventListener('mousedown', e => {
     e.preventDefault();
-    handleTouchAction(action);
+    handleTouchAction(action, playerId);
   });
   btn.addEventListener('mouseup', e => {
     if (action === 'down') {
-      players.forEach(p => p.softDropping = false);
+      if (state === 'playing') players[playerId].softDropping = false;
     }
   });
   btn.addEventListener('mouseleave', e => {
     if (action === 'down') {
-      players.forEach(p => p.softDropping = false);
+      if (state === 'playing') players[playerId].softDropping = false;
     }
   });
 });
