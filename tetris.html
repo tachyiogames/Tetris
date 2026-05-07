@@ -30,9 +30,9 @@ body{background:#0a0a1a;color:#fff;font-family:'Courier New',monospace;display:f
 .btn{background:linear-gradient(135deg,#0ff,#00f);color:#0a0a2e;border:none;padding:0.8rem 2.5rem;border-radius:8px;font-family:inherit;font-size:clamp(0.8rem,2vmin,1.1rem);font-weight:bold;cursor:pointer;text-transform:uppercase;letter-spacing:0.2rem;margin-top:1.5rem;transition:transform 0.15s,box-shadow 0.15s}
 .btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(0,255,255,0.4)}
 .btn.secondary{background:linear-gradient(135deg,#f0f,#f00);color:#fff}
-#game-screen{display:none;position:fixed;inset:0;background:#0a0a1a;z-index:50}
-#game-layout{display:flex;flex-direction:row;align-items:stretch;gap:0.75rem;height:100%;width:100%;padding:0.5vh 0.5vw 0.5vh 0.5vw}
-.player-area{display:flex;flex-direction:column;gap:0.3rem;align-items:center;flex-shrink:0}
+#game-screen{display:none;position:fixed;inset:0;background:#0a0a1a;z-index:50;overflow:hidden}
+#game-layout{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0.75rem;height:100%;width:100%;padding:0.5vh 0.5vw 0.5vh 0.5vw}
+.player-area{display:flex;flex-direction:column;gap:0.3rem;align-items:center;justify-content:center;flex-shrink:0}
 .player-label{color:#0ff;font-size:clamp(0.5rem,1.5vmin,0.75rem);text-align:center;text-transform:uppercase;letter-spacing:0.15rem}
 .player-label.p2{color:#f0f}
 canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;display:block}
@@ -184,7 +184,11 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
 <!-- PAUSE OVERLAY -->
 <div id="pause-overlay">
   <h2>PAUSE</h2>
-  <p>Appuyez sur le bouton pause pour reprendre</p>
+  <p style="margin-top:1rem">Le jeu est en pause</p>
+  <div style="margin-top:2rem;display:flex;flex-direction:column;gap:0.8rem;align-items:center">
+    <button class="btn" id="btn-resume" style="margin-top:0">▶ REPRENDRE</button>
+    <button class="btn secondary" id="btn-quit" style="margin-top:0">✕ QUITTER LE JEU</button>
+  </div>
 </div>
 
 <!-- ENDGAME SCREEN -->
@@ -789,13 +793,26 @@ function togglePause(){
     state='paused';
     document.getElementById('pause-overlay').style.display='flex';
     stopBGM();
-  } else if(state==='paused'){
-    state='playing';
-    document.getElementById('pause-overlay').style.display='none';
-    players[0].lastTime=performance.now();
-    startBGM();
-    gameLoop(performance.now());
   }
+}
+
+function resumeGame(){
+  if(state!=='paused') return;
+  state='playing';
+  document.getElementById('pause-overlay').style.display='none';
+  players[0].lastTime=performance.now();
+  startBGM();
+  gameLoop(performance.now());
+}
+
+function quitGame(){
+  if(state!=='paused'&&state!=='playing') return;
+  if(rocketAnim) cancelAnimationFrame(rocketAnim);
+  stopBGM();
+  document.getElementById('pause-overlay').style.display='none';
+  document.getElementById('game-screen').style.display='none';
+  document.getElementById('menu-screen').style.display='flex';
+  state='menu';
 }
 
 // =============================================
@@ -847,6 +864,8 @@ document.getElementById('btn-menu').addEventListener('click',()=>{
   document.getElementById('menu-screen').style.display='flex';
   state='menu';
 });
+document.getElementById('btn-resume').addEventListener('click', resumeGame);
+document.getElementById('btn-quit').addEventListener('click', quitGame);
 
 // =============================================
 // INIT
