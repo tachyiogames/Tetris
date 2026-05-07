@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0a1a">
 <meta name="description" content="Tetris Rocket Edition - Jeu Tetris rétro avec fusée">
-<link rel="manifest" href="tetris-manifest.json">
+<link rel="manifest" href="./tetris-manifest.json">
 <link rel="apple-touch-icon" href="tetris-icon-192.png">
 <link rel="apple-touch-startup-image" href="tetris-icon-512.png" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <title>TETRIS — Rocket Edition</title>
@@ -194,7 +194,7 @@ canvas.game-canvas{border:2px solid #333;border-radius:4px;background:#0a0a1a;di
     <canvas id="rocket-canvas" width="300" height="200"></canvas>
   </div>
   <p id="endgame-msg"></p>
-  <div id="leaderboard" class="hidden"></div>
+  <div id="leaderboard-endgame" class="hidden"></div>
   <button class="btn" id="btn-restart">REJOUER</button>
   <button class="btn secondary" id="btn-menu" style="margin-left:1rem">MENU</button>
 </div>
@@ -664,7 +664,7 @@ function setupMenu(){
       overlay = document.createElement('div');
       overlay.id = 'leaderboard-overlay';
       overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,10,30,0.95);z-index:150;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1rem';
-      overlay.innerHTML = '<div id="leaderboard" class="hidden" style="max-width:500px;width:90%;"></div><button class="btn secondary" id="btn-close-leaderboard" style="margin-top:1rem;">✕ Fermer</button>';
+      overlay.innerHTML = '<div id="lb-overlay-content" style="max-width:500px;width:90%;"></div><button class="btn secondary" id="btn-close-leaderboard" style="margin-top:1rem;">✕ Fermer</button>';
       document.body.appendChild(overlay);
       document.getElementById('btn-close-leaderboard').addEventListener('click',()=>{
         overlay.style.display='none';
@@ -675,10 +675,10 @@ function setupMenu(){
       });
       overlay.setAttribute('tabindex', '0');
     }
-    const lb=document.getElementById('leaderboard');
-    lb.classList.remove('hidden');
-    showLeaderboard(lb);
+    const lbContent=document.getElementById('lb-overlay-content');
+    showLeaderboard(lbContent);
     overlay.style.display='flex';
+    overlay.setAttribute('tabindex','0');
     overlay.focus();
   });
 }
@@ -845,7 +845,6 @@ document.getElementById('btn-menu').addEventListener('click',()=>{
   const lbOverlay = document.getElementById('leaderboard-overlay');
   if(lbOverlay) lbOverlay.style.display='none';
   document.getElementById('menu-screen').style.display='flex';
-  document.getElementById('leaderboard').classList.add('hidden');
   state='menu';
 });
 
@@ -964,20 +963,49 @@ let installPrompt = null;
 let iOSInstallShown = false;
 
 function getIsIOS(){
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const ua = navigator.userAgent;
+  if (/iPhone|iPod/.test(ua)) return true;
+  if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+  if (/iPad/.test(ua)) return true;
+  return false;
+}
+
+function isInstalled(){
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
 }
 
 function showIOSInstallHint(){
+  // On iOS, there's no native install prompt — users must use Share > Add to Home Screen
+  // Show the button for iOS users who aren't already in standalone mode
   const btn = document.getElementById('btn-install');
-  if(btn && getIsIOS() && !iOSInstallShown){
+  if(btn && getIsIOS() && !isInstalled() && !iOSInstallShown){
     btn.style.display = 'block';
+    iOSInstallShown = true;
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      iOSInstallShown = true;
-      btn.textContent = '👆 Appuye sur le bouton Partager ↗️, puis "Sur l\'écran d\'accueil"';
-      btn.style.fontSize = '0.8rem';
-      btn.style.padding = '0.6rem 1.5rem';
+      btn.innerHTML = '👆 Appuie sur le bouton <b>Partager ↗️</b>, puis <b>"Sur l\'écran d\'accueil"</b>';
+      btn.style.fontSize = '0.75rem';
+      btn.style.padding = '0.5rem 1rem';
+      btn.style.lineHeight = '1.4';
+    });
+  }
+}
+
+// Show iOS install button on ALL touch devices (not just iOS) for better UX
+function showTouchInstallHint(){
+  const btn = document.getElementById('btn-install');
+  if(btn && isTouchDevice && !isInstalled() && !iOSInstallShown && !getIsIOS()){
+    // Android Chrome will use the beforeinstallprompt event
+    // Android Firefox and others get this generic hint
+    btn.style.display = 'block';
+    iOSInstallShown = true;
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      btn.innerHTML = '👆 Ouvre le menu <b>⋮</b> (ou <b>⋯</b>), puis <b>"Ajouter à l\'écran d\'accueil"</b>';
+      btn.style.fontSize = '0.75rem';
+      btn.style.padding = '0.5rem 1rem';
+      btn.style.lineHeight = '1.4';
     });
   }
 }
@@ -1004,6 +1032,8 @@ window.addEventListener('beforeinstallprompt', e => {
 
 // Detect iOS and show install hint after a delay
 setTimeout(showIOSInstallHint, 2000);
+// Also check for other touch devices
+setTimeout(showTouchInstallHint, 2000);
 
 // =============================================
 // INIT
